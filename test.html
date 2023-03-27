@@ -44,7 +44,12 @@
         lon: 0
     }
 
-
+    function random(seed) {
+        var x = Math.sin(seed++) * 10000;
+        x = x - Math.floor(x)
+        console.log(`returning random nr ${x}`)
+        return x;
+    }
 
     function setAreaRectangle(lat, lon, map) {
         // shorten lat and long to 4 decimal places and draw a rectangle of that area
@@ -78,9 +83,12 @@
         // pick a random location within 2km of the home area's center
         const latCenter = (parseFloat(rectCoords.topleft[0]) + parseFloat(rectCoords.bottomright[0])) / 2;
         const lonCenter = (parseFloat(rectCoords.topleft[1]) + parseFloat(rectCoords.bottomright[1])) / 2;
+        // use date as seed, as integer of the format 20230327
+        const seed = parseInt(new Date().toISOString().split("T")[0].replace(/-/g, ""));
+        const invertedSeed = parseInt(seed.toString().split("").reverse().join("0"));
         randomLoc = {
-            lat: latCenter + (Math.random() - 0.5) * 0.04,
-            lon: lonCenter + (Math.random() - 0.5) * 0.04
+            lat: latCenter + (random(seed) - 0.5) * 0.08,
+            lon: lonCenter + (random(invertedSeed) - 0.5) * 0.08
         }
         // set a marker
         // if old exist, delete
