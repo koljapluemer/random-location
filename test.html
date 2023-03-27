@@ -33,10 +33,16 @@
 
     let homeMarker = {};
     let homeRect = {};
+    let randomMarker = {};
 
 
     let lat = 50;
     let lon = 0;
+
+    let randomLoc = {
+        lat: 0,
+        lon: 0
+    }
 
 
 
@@ -63,9 +69,26 @@
             weight: 1
         }).addTo(map);
 
+        setRandomLoc(map)
+
         return rect;
     }
 
+    function setRandomLoc(map) {
+        // pick a random location within 2km of the home area's center
+        const latCenter = (parseFloat(rectCoords.topleft[0]) + parseFloat(rectCoords.bottomright[0])) / 2;
+        const lonCenter = (parseFloat(rectCoords.topleft[1]) + parseFloat(rectCoords.bottomright[1])) / 2;
+        randomLoc = {
+            lat: latCenter + (Math.random() - 0.5) * 0.04,
+            lon: lonCenter + (Math.random() - 0.5) * 0.04
+        }
+        // set a marker
+        // if old exist, delete
+        if (randomMarker != undefined) {
+            map.removeLayer(randomMarker);
+        };
+        randomMarker = L.marker([randomLoc.lat, randomLoc.lon]).addTo(map);
+    }
 
 
 
