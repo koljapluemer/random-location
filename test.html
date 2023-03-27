@@ -31,10 +31,46 @@
 </style>
 <script>
 
+    let homeMarker = {};
+    let homeRect = {};
+
+
+    let lat = 50;
+    let lon = 0;
+
+
+
+    function setAreaRectangle(lat, lon, map) {
+        // shorten lat and long to 4 decimal places and draw a rectangle of that area
+        let latShort = lat.toString().split(".")[0] + "." + lat.toString().split(".")[1].substring(0, 2);
+        let lonShort = lon.toString().split(".")[0] + "." + lon.toString().split(".")[1].substring(0, 2);
+        // draw rect
+        rectCoords = {
+            topleft: [(parseFloat(latShort) + 0.01).toString(), lonShort],
+            bottomright: [latShort, (parseFloat(lonShort) + 0.01).toString()]
+
+        }
+        console.log(
+            `original lat: ${lat} and long: ${lon}, \n
+            shortened lat: ${latShort} and long: ${lonShort}, \n
+            rectCoords: ${JSON.stringify(rectCoords)}`
+        )
+        let rect = L.rectangle([
+            rectCoords.topleft,
+            rectCoords.bottomright
+        ], {
+            color: "red",
+            weight: 1
+        }).addTo(map);
+
+        return rect;
+    }
+
+
 
 
     let map = new L.Map("map", {
-        center: [51.505, -0.09],
+        center: [lat, lon],
         // use OSM
         layers: [
             new L.TileLayer(
@@ -47,8 +83,18 @@
         zoomControl: true
     });
 
-    // add location control to global name space for testing only
-    // on a production site, omit the "lc = "!
+    // check if lat and long are in localStorage
+    if (localStorage.getItem("lat") != null) {
+        lat = localStorage.getItem("lat");
+        lon = localStorage.getItem("lon");
+
+        homeRect = setAreaRectangle(lat, lon, map);
+
+        // move map to saved location
+        map.setView([lat, lon], 12);
+    }
+
+
     lc = L.control
         .locate({
             strings: {
@@ -60,7 +106,7 @@
 
     // MARKER PLACEMENT
 
-    var theMarker = {};
+
 
     map.on('click', function (e) {
         lat = e.latlng.lat;
@@ -69,12 +115,19 @@
         console.log("You clicked the map at LAT: " + lat + " and LONG: " + lon);
         //Clear existing marker, 
 
-        if (theMarker != undefined) {
-            map.removeLayer(theMarker);
+        if (homeRect != undefined) {
+            map.removeLayer(homeRect);
         };
 
-        //Add a marker to show where you clicked.
-        theMarker = L.marker([lat, lon]).addTo(map);
+
+        // save lat and long to localStorage
+        localStorage.setItem("lat", lat);
+        localStorage.setItem("lon", lon);
+
+        homeRect = setAreaRectangle(lat, lon, map);
+
+
+
     });
 
 
