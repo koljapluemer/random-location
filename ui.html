@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Location</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="landing">
+
+
+        <div id="landing-content">
+            <h1>
+                Need a destination for a random walk in your area?
+            </h1>
+
+            <ul>
+                <li>
+                    Pick the area where you currently are.
+                </li>
+                <li>
+                    Get a random location near you every day.
+                </li>
+                <li>
+                    Go for a walk!
+                </li>
+                <li>
+                    No signup, no costs, no ads, no data collection.
+                </li>
+            </ul>
+            <a href="#" id="primary-button">Get Started</a>
+        </div>
+
+        <div id="landing-images">
+            <img src="assets/map.png" alt="" id="map">
+            <img src="assets/guy.png" alt="" id="guy">
+        </div>
+    </div>
+
+</body>
+
+<style>
+    @font-face {
+        font-family: "chomchom";
+        src: url("assets/chomchom2.otf");
+    }
+
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: "chomchom", serif;
+        height: 100%;
+        color: #222;
+    }
+
+    #guy {
+        position: absolute;
+        left: -15%;
+        bottom: 5%;
+        min-height: 350px;
+    }
+
+    #map {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    ul {
+        font-size: 2rem;
+    }
+
+    #landing {
+        display: flex;
+        height: 100%;
+        background-image: url("assets/map_bg.jpg");
+        background-size: cover;
+        /* blur background */
+
+        
+    }
+
+    #landing-content {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        margin: 5%;
+    }
+
+    #landing-images {
+        background: blue;
+        max-width: 40%;
+        position: relative;
+
+    }
+
+    #primary-button {
+        font-size: 2rem;
+    }
+</style>
+
+</html>
