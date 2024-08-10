@@ -11,8 +11,33 @@
 
   <div class="flex gap-2 flex-col">
     <h2 class="text-bold text-xl">2)</h2>
-
-    <router-link :class="'btn btn-primary btn-lg' + (!(homeMarker.latitude == 0 && homeMarker.longitude == 0) ? '' : ' btn-disabled')" 
+    <div class="flex space-x-4">
+      <label
+        v-for="option in options"
+        @change="saveDistToStore"
+        :key="option.value"
+        class="inline-flex items-center cursor-pointer"
+      >
+        <input
+          type="radio"
+          name="distance"
+          :value="option.value"
+          v-model="main.distance"
+          class="hidden"
+        />
+        <span
+          :class="[
+            'px-4 py-2 rounded-full transition-colors',
+            main.distance === option.value
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
+          ]"
+        >
+          {{ option.label }}
+        </span>
+      </label>
+    </div>
+    <router-link :class="'btn btn-primary btn-lg' + (!(main.homeMarker.latitude == 0 && main.homeMarker.longitude == 0) ? '' : ' btn-disabled')" 
     to="/main">
       Get a Random Location</router-link
     >
@@ -21,6 +46,17 @@
 
 <script setup>
 import PinMap from "@/components/PinMap.vue";
-import { homeMarker } from "../stores/mapStore";
+import { ref, onMounted } from "vue";
+
+import { useMainStore } from '@/stores/main'
+const main = useMainStore()
+
+const options = [
+  { label: "Short Walk", value: 0.5 },
+  { label: "Long Walk", value: 2 },
+  { label: "Hike", value: 7 },
+];
+
+
 
 </script>

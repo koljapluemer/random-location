@@ -5,18 +5,19 @@
 <script setup lang="ts">
 import leaflet from "leaflet";
 import { onMounted, watchEffect } from "vue";
-
-import { homeMarker } from "../stores/mapStore";
+import { useMainStore } from '@/stores/main'
+const main = useMainStore()
 
 let map: leaflet.Map;
 
 onMounted(() => {
-  // default view is either homemarker or new york
+  // default view is either main.homeMarker or new york
   let defaultView = [40.73061, -73.935242];
-  if (!(homeMarker.value.latitude == 0 && homeMarker.value.longitude == 0)) {
+  if (!(main.homeMarker.latitude == 0 && main.homeMarker.longitude == 0)) {
     console.log("setting default view to home marker");
-    defaultView = [homeMarker.value.latitude, homeMarker.value.longitude];
+    defaultView = [main.homeMarker.latitude, main.homeMarker.longitude];
   }
+
 
   map = leaflet.map("map").setView(defaultView, 13);
 
@@ -28,9 +29,9 @@ onMounted(() => {
     })
     .addTo(map);
 
-  //   if homeMarker set, add to map
-  if (homeMarker.value) {
-    leaflet.marker([homeMarker.value.latitude, homeMarker.value.longitude]).addTo(map);
+  //   if main.homeMarker set, add to map
+  if (main.homeMarker) {
+    leaflet.marker([main.homeMarker.latitude, main.homeMarker.longitude]).addTo(map);
   }
 
   map.addEventListener("click", (e) => {
@@ -46,14 +47,19 @@ onMounted(() => {
       );
 
     //   if previous home marker, remove
-    if (homeMarker.value) {
+    if (main.homeMarker) {
       console.log("removing home marker");
-      map.removeLayer(homeMarker.value);
+      map.removeLayer(main.homeMarker);
+      // reset localstorage date values
+      // short_destinationMarkerGeneratedAtDate.value = "";
+      // mid_destinationMarkerGeneratedAtDate.value = "";
+      // long_destinationMarkerGeneratedAtDate.value = "";
       // reload page
       location.reload();
     }
 
-    homeMarker.value = { latitude, longitude };
+    main.homeMarker = { latitude, longitude };
+    console.log("home marker set to", main.homeMarker);
   });
 });
 

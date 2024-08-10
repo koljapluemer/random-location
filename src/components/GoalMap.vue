@@ -1,29 +1,5 @@
 <template>
-  <div class="flex space-x-4">
-    <label
-      v-for="option in options"
-      :key="option.value"
-      class="inline-flex items-center cursor-pointer"
-    >
-      <input
-        type="radio"
-        name="distance"
-        :value="option.value"
-        v-model="distance"
-        class="hidden"
-      />
-      <span
-        :class="[
-          'px-4 py-2 rounded-full transition-colors',
-          distance === option.value
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
-        ]"
-      >
-        {{ option.label }}
-      </span>
-    </label>
-  </div>
+
   <div id="map"></div>
 </template>
 
@@ -31,19 +7,14 @@
 import leaflet from "leaflet";
 import { onMounted, watchEffect } from "vue";
 
-import {
-  homeMarker,
-  generatedDestinationMarker,
-  destinationMarkerGeneratedAtDate,
-} from "../stores/mapStore";
 
 let map: leaflet.Map;
 
 import { ref } from "vue";
 
 import randomLocation from "random-location";
-
-const distance = ref(0.5); // Default selected value
+import { useMainStore } from '@/stores/main'
+const main = useMainStore()
 
 const options = [
   { label: "Short Walk", value: 0.5 },
@@ -51,38 +22,47 @@ const options = [
   { label: "Hike", value: 7 },
 ];
 
-function setRandomCoord() {
-  // const randomCirclePoint = (centerPoint, radius, randomFn = Math.random)
 
-  // check if destinationMarkerGeneratedAtDate was local today
-  // ONLY date not whole datetime!!
-  if (destinationMarkerGeneratedAtDate.value == new Date().toLocaleDateString()) {
-    console.log(
-      "destinationMarkerGeneratedAtDate was today, not generating new destination"
-    );
-  } else {
-    console.log(
-      "destinationMarkerGeneratedAtDate was not today, generating new destination"
-    );
-    const randomPoint = randomLocation.randomCirclePoint(
-      { latitude: homeMarker.value.latitude, longitude: homeMarker.value.longitude },
-      distance.value * 1000
-    );
-    generatedDestinationMarker.value = randomPoint;
-    destinationMarkerGeneratedAtDate.value = new Date().toLocaleDateString();
-  }
+
+function getRandomCoord() {
+  // TODO: this is a truly terrible non-DRY hack, with magic numbers
+  // ...fix :)
+  // ...this is also mirrored in store
+  console.log('distance is:', distance.value)
+
+  // if ((distance.value = 0.5)) {
+  //   console.log(short_destinationMarkerGeneratedAtDate.value, new Date().toLocaleDateString())
+  //   if (short_destinationMarkerGeneratedAtDate.value == new Date().toLocaleDateString()) {
+  //     console.log(
+  //       "short destinationMarkerGeneratedAtDate was today, not generating new destination"
+  //     );
+  //   } else {
+  //     console.log(
+  //       "destinationMarkerGeneratedAtDate was not today, generating new destination"
+  //     );
+  //     console.log('home marker', main.homeMarker.latitude, main.homeMarker.longitude)
+  //     const randomPoint = randomLocation.randomCirclePoint(
+  //       { latitude: main.homeMarker.latitude, longitude: main.homeMarker.longitude },
+  //       distance.value * 1000
+  //     );
+  //     short_generatedDestinationMarker.value = randomPoint;
+  //     short_destinationMarkerGeneratedAtDate.value = new Date().toLocaleDateString();
+  //   }
+
+  //   return short_generatedDestinationMarker.value;
+  // }
 
 }
 
 onMounted(() => {
-  if (homeMarker.value.latitude == 0 && homeMarker.value.longitude == 0) {
+  if (main.homeMarker.latitude == 0 && main.homeMarker.longitude == 0) {
     // redirect to home page
     location.href = "/";
   }
 
   map = leaflet
     .map("map")
-    .setView([homeMarker.value.latitude, homeMarker.value.longitude], 13);
+    .setView([main.homeMarker.latitude, main.homeMarker.longitude], 13);
 
   leaflet
     .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -92,20 +72,19 @@ onMounted(() => {
     })
     .addTo(map);
 
-  setRandomCoord();
+  const markerCoords = getRandomCoord();
   // create marker
   leaflet
     .marker([
-      generatedDestinationMarker.value.latitude,
-      generatedDestinationMarker.value.longitude,
+      markerCoords.latitude,
+      markerCoords.longitude,
     ])
     .addTo(map)
     .bindPopup(
-      `Destination Marker at (<strong>${generatedDestinationMarker.value.latitude.toFixed(
+      `Destination Marker at (<strong>${markerCoords.latitude.toFixed(
         2
-      )},${generatedDestinationMarker.value.longitude.toFixed(2)}</strong>)`
+      )},${markerCoords.longitude.toFixed(2)}</strong>)`
     );
-
 });
 </script>
 

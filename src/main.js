@@ -2,11 +2,16 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
-// The style are only needed for some map controls.
-// However, you can also style them by your own
-import "vue3-openlayers/styles.css";
 
+import router from './router'
+
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+
+import "vue3-openlayers/styles.css";
 import OpenLayersMap from "vue3-openlayers";
 
-createApp(App).use(router).use(OpenLayersMap /*, options */).mount('#app')
+createApp(App).use(router).use(OpenLayersMap /*, options */).use(pinia).mount('#app')
