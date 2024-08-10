@@ -12,7 +12,8 @@
   <div class="flex gap-2 flex-col">
     <h2 class="text-bold text-xl">2)</h2>
 
-    <router-link class="btn btn-primary btn-lg" to="/main">
+    <router-link :class="'btn btn-primary btn-lg' + (!(homeMarker.latitude == 0 && homeMarker.longitude == 0) ? '' : ' btn-disabled')" 
+    to="/main">
       Get a Random Location</router-link
     >
   </div>
@@ -20,4 +21,6 @@
 
 <script setup>
 import PinMap from "@/components/PinMap.vue";
+import { homeMarker } from "../stores/mapStore";
+
 </script>

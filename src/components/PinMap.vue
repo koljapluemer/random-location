@@ -5,18 +5,16 @@
 <script setup lang="ts">
 import leaflet from "leaflet";
 import { onMounted, watchEffect } from "vue";
-import { useGeolocation } from "@vueuse/core";
 
 import { homeMarker } from "../stores/mapStore";
-
-const { coords } = useGeolocation();
 
 let map: leaflet.Map;
 
 onMounted(() => {
   // default view is either homemarker or new york
   let defaultView = [40.73061, -73.935242];
-  if (homeMarker.value) {
+  if (!(homeMarker.value.latitude == 0 && homeMarker.value.longitude == 0)) {
+    console.log("setting default view to home marker");
     defaultView = [homeMarker.value.latitude, homeMarker.value.longitude];
   }
 
@@ -49,7 +47,7 @@ onMounted(() => {
 
     //   if previous home marker, remove
     if (homeMarker.value) {
-        console.log('removing home marker');
+      console.log("removing home marker");
       map.removeLayer(homeMarker.value);
       // reload page
       location.reload();
@@ -60,11 +58,12 @@ onMounted(() => {
 });
 
 
+
 </script>
 
 <style scoped>
 #map {
   width: 100%;
-  height: 100vh;
+  height: max(80vh, 500px);
 }
 </style>
