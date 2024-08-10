@@ -31,11 +31,17 @@
 import leaflet from "leaflet";
 import { onMounted, watchEffect } from "vue";
 
-import { homeMarker } from "../stores/mapStore";
+import {
+  homeMarker,
+  generatedDestinationMarker,
+  destinationMarkerGeneratedAtDate,
+} from "../stores/mapStore";
 
 let map: leaflet.Map;
 
 import { ref } from "vue";
+
+import randomLocation from "random-location";
 
 const distance = ref(0.5); // Default selected value
 
@@ -44,6 +50,29 @@ const options = [
   { label: "Long Walk", value: 2 },
   { label: "Hike", value: 7 },
 ];
+
+function setRandomCoord() {
+  // const randomCirclePoint = (centerPoint, radius, randomFn = Math.random)
+
+  // check if destinationMarkerGeneratedAtDate was local today
+  // ONLY date not whole datetime!!
+  if (destinationMarkerGeneratedAtDate.value == new Date().toLocaleDateString()) {
+    console.log(
+      "destinationMarkerGeneratedAtDate was today, not generating new destination"
+    );
+  } else {
+    console.log(
+      "destinationMarkerGeneratedAtDate was not today, generating new destination"
+    );
+    const randomPoint = randomLocation.randomCirclePoint(
+      { latitude: homeMarker.value.latitude, longitude: homeMarker.value.longitude },
+      distance.value * 1000
+    );
+    generatedDestinationMarker.value = randomPoint;
+    destinationMarkerGeneratedAtDate.value = new Date().toLocaleDateString();
+  }
+
+}
 
 onMounted(() => {
   if (homeMarker.value.latitude == 0 && homeMarker.value.longitude == 0) {
@@ -63,28 +92,20 @@ onMounted(() => {
     })
     .addTo(map);
 
-  // map.addEventListener("click", (e) => {
-  //   const { lat: latitude, lng: longitude } = e.latlng;
+  setRandomCoord();
+  // create marker
+  leaflet
+    .marker([
+      generatedDestinationMarker.value.latitude,
+      generatedDestinationMarker.value.longitude,
+    ])
+    .addTo(map)
+    .bindPopup(
+      `Destination Marker at (<strong>${generatedDestinationMarker.value.latitude.toFixed(
+        2
+      )},${generatedDestinationMarker.value.longitude.toFixed(2)}</strong>)`
+    );
 
-  //   leaflet
-  //     .marker([latitude, longitude])
-  //     .addTo(map)
-  //     .bindPopup(
-  //       `Saved Marker at (<strong>${latitude.toFixed(2)},${longitude.toFixed(
-  //         2
-  //       )}</strong>)`
-  //     );
-
-  //   //   if previous home marker, remove
-  //   if (homeMarker.value) {
-  //     console.log("removing home marker");
-  //     map.removeLayer(homeMarker.value);
-  //     // reload page
-  //     location.reload();
-  //   }
-
-  //   homeMarker.value = { latitude, longitude };
-  // });
 });
 </script>
 

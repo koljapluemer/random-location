@@ -3,6 +3,7 @@
   <GoalMap></GoalMap>
 
   <small>There is a new random location every day.</small>
+  <router-link to="/" class="btn btn-primary btn-lg">Change home location</router-link>
 
 </template>
 
