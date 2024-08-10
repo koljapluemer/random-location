@@ -8,7 +8,8 @@ export const useMainStore = defineStore('counter', {
                 latitude: 0,
                 longitude: 0
             },
-            distance: 0.5
+            distance: 0.5,
+            generatedLocations: {},
         }
     },
     // could also be defined as

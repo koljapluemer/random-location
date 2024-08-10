@@ -50,11 +50,8 @@ onMounted(() => {
     if (main.homeMarker) {
       console.log("removing home marker");
       map.removeLayer(main.homeMarker);
-      // reset localstorage date values
-      // short_destinationMarkerGeneratedAtDate.value = "";
-      // mid_destinationMarkerGeneratedAtDate.value = "";
-      // long_destinationMarkerGeneratedAtDate.value = "";
-      // reload page
+      // reset saved distances
+      main.generatedLocations = {};
       location.reload();
     }
 

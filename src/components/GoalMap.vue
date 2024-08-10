@@ -25,32 +25,35 @@ const options = [
 
 
 function getRandomCoord() {
-  // TODO: this is a truly terrible non-DRY hack, with magic numbers
-  // ...fix :)
-  // ...this is also mirrored in store
-  console.log('distance is:', distance.value)
 
-  // if ((distance.value = 0.5)) {
-  //   console.log(short_destinationMarkerGeneratedAtDate.value, new Date().toLocaleDateString())
-  //   if (short_destinationMarkerGeneratedAtDate.value == new Date().toLocaleDateString()) {
-  //     console.log(
-  //       "short destinationMarkerGeneratedAtDate was today, not generating new destination"
-  //     );
-  //   } else {
-  //     console.log(
-  //       "destinationMarkerGeneratedAtDate was not today, generating new destination"
-  //     );
-  //     console.log('home marker', main.homeMarker.latitude, main.homeMarker.longitude)
-  //     const randomPoint = randomLocation.randomCirclePoint(
-  //       { latitude: main.homeMarker.latitude, longitude: main.homeMarker.longitude },
-  //       distance.value * 1000
-  //     );
-  //     short_generatedDestinationMarker.value = randomPoint;
-  //     short_destinationMarkerGeneratedAtDate.value = new Date().toLocaleDateString();
-  //   }
+  // store has a generatedLocations{}
+  // it stores a distance as key, and an object as value with lat, long, and date
+  // if key of todays day does not exist, or date for that key is not today, regenerate:
+  let regenerate_location = false;
+  if (!main.generatedLocations[main.distance]) {
+    console.log('no generated location for this distance')
+    regenerate_location = true;
+  } else if (main.generatedLocations[main.distance].date != new Date().toLocaleDateString()) {
+    console.log('generated location is not from today')
+    regenerate_location = true;
+  }
 
-  //   return short_generatedDestinationMarker.value;
-  // }
+  if (regenerate_location) {
+    console.log('regenerating location')
+    const randomPoint = randomLocation.randomCirclePoint(
+      { latitude: main.homeMarker.latitude, longitude: main.homeMarker.longitude },
+      main.distance * 1000
+    );
+    main.generatedLocations[main.distance] = {
+      latitude: randomPoint.latitude,
+      longitude: randomPoint.longitude,
+      date: new Date().toLocaleDateString()
+    }
+  }
+
+  return main.generatedLocations[main.distance];
+
+
 
 }
 
