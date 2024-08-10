@@ -51,6 +51,8 @@ onMounted(() => {
     if (homeMarker.value) {
         console.log('removing home marker');
       map.removeLayer(homeMarker.value);
+      // reload page
+      location.reload();
     }
 
     homeMarker.value = { latitude, longitude };
