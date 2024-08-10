@@ -11,9 +11,13 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'"
   },
   "dependencies": {
+    "ol": "^10.0.0",
+    "ol-contextmenu": "^5.5.0",
+    "ol-ext": "^4.0.21",
     "vue": "^3.4.29",
     "vue-lite-youtube-embed": "^1.2.4",
-    "vue-router": "^4.4.2"
+    "vue-router": "^4.4.2",
+    "vue3-openlayers": "^11.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",

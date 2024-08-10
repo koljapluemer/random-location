@@ -1,14 +1,24 @@
 <template>
-  <img src="@/assets/walk.svg" alt="" class="max-w-52 mx-auto" />
-  <ul class="text-lg text-left list-disc mt-10">
-    <li>You want to explore the area around you.</li>
-    <li>You want to go on a walk, but not the same route you walked yesterday.</li>
-  </ul>
+  <!-- <img src="@/assets/walk.svg" alt="" class="max-w-52 mx-auto" /> -->
+  <h1 class="font-bold text-2xl">Get a random location near you for your next walk:</h1>
   <div class="flex gap-2 flex-col">
+    <h2 class="text-bold text-xl">1) Set your home location</h2>
+    <DemoMap></DemoMap>
+    <small>You don't have to pin your exact location, your rough neighborhood will do. I (the site owner) do not save any of your location data.
+      The site uses the privacy-friendly OpenStreetMap, and you can read <a href="https://osmfoundation.org/wiki/Privacy_Policy">their privacy policy</a>.
+    </small>
+    </div>
+
+  <div class="flex gap-2 flex-col">
+    <h2 class="text-bold text-xl">2)</h2>
+
     <router-link class="btn btn-primary btn-lg" to="/main">
-      Get a Random Location</router-link>
-    <span class="text-center mx-auto text-sm">...to walk to</span>
+      Get a Random Location</router-link
+    >
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+// import components/DemoMap.vue
+import DemoMap from "@/components/DemoMap.vue";
+</script>
