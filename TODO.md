@@ -1,0 +1,2 @@
+- adapt goatcounter and links
+- upload netlify

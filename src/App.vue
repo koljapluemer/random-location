@@ -32,7 +32,7 @@
     </div>
 
     <div class="mb-4 flex justify-center gap-2 items-center">
-      <router-link to="/main" class="underline">Get Random Stretch</router-link>
+      <router-link to="/main" class="underline">Get Random Location</router-link>
       <span>•</span>
       <a href="mailto:feedback@koljapluemer.com" class="underline">Give Feedback</a>
       <span>•</span>
