@@ -3,7 +3,8 @@
   <h1 class="font-bold text-2xl">Get a random location near you for your next walk:</h1>
   <div class="flex gap-2 flex-col">
     <h2 class="text-bold text-xl">1) Set your home location</h2>
-    <DemoMap></DemoMap>
+    <!-- <DemoMap></DemoMap> -->
+     <PinMap></PinMap>
     <small>You don't have to pin your exact location, your rough neighborhood will do. I (the site owner) do not save any of your location data.
       The site uses the privacy-friendly OpenStreetMap, and you can read <a href="https://osmfoundation.org/wiki/Privacy_Policy">their privacy policy</a>.
     </small>
@@ -21,4 +22,5 @@
 <script setup>
 // import components/DemoMap.vue
 import DemoMap from "@/components/DemoMap.vue";
+import PinMap from "@/components/PinMap.vue";
 </script>
