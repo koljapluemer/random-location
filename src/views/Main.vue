@@ -25,7 +25,7 @@
     >
   </div>
   <!-- google maps share link -->
-   <a  class="btn btn-primary btn-lg" :href="`https://www.google.com/maps/search/?api=1&query=${main.generatedLocations[main.distance].latitude},${main.generatedLocations[main.distance].longitude}`" target="_blank">Open in Google Maps</a>
+   <a  class="btn btn-primary btn-lg" v-if="main.generatedLocations[main.distance]" :href="`https://www.google.com/maps/search/?api=1&query=${main.generatedLocations[main.distance].latitude},${main.generatedLocations[main.distance].longitude}`" target="_blank">Open in Google Maps</a>
   <small>There is a new random location every day.</small>
   <router-link to="/" class="btn btn-sm">Change home location</router-link>
 
